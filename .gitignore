@@ -44,3 +44,5 @@ ios/Flutter/App.framework
 
 # macOS
 .DS_Store
+build_bundle
+.dart_tool/
