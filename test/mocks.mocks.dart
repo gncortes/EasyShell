@@ -5,6 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
+import 'package:easy_shell/domain/entities/note.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i4;
 import 'package:sqflite_common/sql.dart' as _i5;
@@ -517,4 +518,13 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
           ),
         ),
       ) as _i2.Batch);
+}
+
+/// A class which mocks [NoteEntity].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNoteEntity extends _i1.Mock implements _i6.NoteEntity {
+  MockNoteEntity() {
+    _i1.throwOnMissingStub(this);
+  }
 }
