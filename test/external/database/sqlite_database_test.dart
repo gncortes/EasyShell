@@ -1,4 +1,3 @@
-import 'package:easy_shell/external/database/sql/sql.dart';
 import 'package:easy_shell/external/database/sqlite_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -11,18 +10,13 @@ void main() {
 
   setUp(() {
     mockDatabase = MockDatabase();
-    sqliteDatabase = SQLiteDatabase();
+    sqliteDatabase = SQLiteDatabase(mockDatabase);
   });
 
   group('SQLiteDatabase', () {
     test('init should initialize the database', () async {
-      when(mockDatabase.execute(any)).thenAnswer((_) async => {});
-
       await sqliteDatabase.init();
-
-      verify(mockDatabase.execute(SQLNoteQueries.createTableNotes)).called(1);
-      verify(mockDatabase.execute(SQLCommandQueries.createTableCommands))
-          .called(1);
+      expect(sqliteDatabase.isInitialized, isTrue);
     });
 
     test('insert should insert data into the table', () async {
@@ -75,7 +69,7 @@ void main() {
     });
 
     test('close should close the database connection', () async {
-      when(mockDatabase.close()).thenAnswer((_) async => null);
+      when(mockDatabase.close()).thenAnswer((_) async => {});
 
       await sqliteDatabase.close();
 

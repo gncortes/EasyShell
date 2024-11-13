@@ -5,13 +5,18 @@ import 'sql/sql.dart';
 
 class SQLiteDatabase implements DatabaseService {
   late final Database _database;
+  bool isInitialized = false;
 
-  @override
-  Future<void> init([Database? database]) async {
+  SQLiteDatabase([Database? database]) {
     if (database != null) {
       _database = database;
-      return;
+      isInitialized = true;
     }
+  }
+
+  @override
+  Future<void> init() async {
+    if (isInitialized) return;
 
     String path = join(await getDatabasesPath(), 'app_database.db');
     _database = await openDatabase(
@@ -22,16 +27,19 @@ class SQLiteDatabase implements DatabaseService {
         await db.execute(SQLCommandQueries.createTableCommands);
       },
     );
+    isInitialized = true;
   }
 
   @override
   Future<int> insert(String table, Map<String, dynamic> data) async {
+    await init();
     return await _database.insert(table, data);
   }
 
   @override
   Future<List<Map<String, dynamic>>> query(String table,
       {String? where, List<dynamic>? whereArgs}) async {
+    await init();
     return await _database.query(
       table,
       where: where,
@@ -46,18 +54,28 @@ class SQLiteDatabase implements DatabaseService {
     String? where,
     List<dynamic>? whereArgs,
   }) async {
-    return await _database.update(table, data,
-        where: where, whereArgs: whereArgs);
+    await init();
+    return await _database.update(
+      table,
+      data,
+      where: where,
+      whereArgs: whereArgs,
+    );
   }
 
   @override
   Future<int> delete(String table,
       {String? where, List<dynamic>? whereArgs}) async {
-    return await _database.delete(table, where: where, whereArgs: whereArgs);
+    await init();
+    return await _database.delete(
+      table,
+      where: where,
+      whereArgs: whereArgs,
+    );
   }
 
   @override
-  Future<void> close() async {
-    await _database.close();
+  Future<void> close() {
+    return _database.close();
   }
 }
