@@ -1,4 +1,4 @@
-abstract class DatabaseService {
+abstract interface class DatabaseService {
   Future<void> init();
 
   Future<int> insert(

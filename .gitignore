@@ -1,0 +1,46 @@
+# Flutter
+**/build/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/.dart_tool/
+**/.idea/
+**/.vscode/
+**/.android/
+**/android/.gradle/
+**/android/app/*.iml
+**/ios/Pods/
+**/linux/flutter/ephemeral/
+**/macos/Flutter/ephemeral/
+**/web/flutter/ephemeral/
+**/windows/flutter/ephemeral/
+**/.packages
+**/flutter_*.png
+**/.FlutterBuildState
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.metadata
+**/pubspec.lock
+**/coverage/
+**/*.log
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Xcode
+*.xcworkspace
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/App.framework
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
