@@ -25,8 +25,10 @@ class SQLiteDatabase implements DatabaseService {
           print('Error: $e');
           print('StackTrace: $stacktrace');
         }
-        throw DatabaseError(DatabaseErrorType.connectionError,
-            'Failed to connect to the database: ${e.toString()}');
+        throw DatabaseError(
+          DatabaseErrorType.connectionError,
+          'Failed to connect to the database: ${e.toString()}',
+        );
       }
     }
     return _database!;
@@ -46,16 +48,22 @@ class SQLiteDatabase implements DatabaseService {
         print('Error: $e');
         print('StackTrace: $stacktrace');
       }
-      throw DatabaseError(DatabaseErrorType.insertError,
-          'Failed to insert into table $table: ${e.toString()}');
+      throw DatabaseError(
+        DatabaseErrorType.insertError,
+        'Failed to insert into table $table: ${e.toString()}',
+      );
     }
   }
 
   @override
-  Future<List<Map<String, dynamic>>> query(String table,
-      {String? where, List<dynamic>? whereArgs}) async {
+  Future<List<Map<String, dynamic>>> query(
+    String table, {
+    String? where,
+    List<dynamic>? whereArgs,
+  }) async {
     try {
       final db = await database;
+
       return await db.query(
         table,
         where: where,
@@ -66,8 +74,10 @@ class SQLiteDatabase implements DatabaseService {
         print('Error: $e');
         print('StackTrace: $stacktrace');
       }
-      throw DatabaseError(DatabaseErrorType.queryError,
-          'Failed to query table $table: ${e.toString()}');
+      throw DatabaseError(
+        DatabaseErrorType.queryError,
+        'Failed to query table $table: ${e.toString()}',
+      );
     }
   }
 
@@ -91,8 +101,10 @@ class SQLiteDatabase implements DatabaseService {
         print('Error: $e');
         print('StackTrace: $stacktrace');
       }
-      throw DatabaseError(DatabaseErrorType.updateError,
-          'Failed to update table $table: ${e.toString()}');
+      throw DatabaseError(
+        DatabaseErrorType.updateError,
+        'Failed to update table $table: ${e.toString()}',
+      );
     }
   }
 

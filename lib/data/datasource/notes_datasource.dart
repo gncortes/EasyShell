@@ -31,12 +31,25 @@ class NotesDatasourceImplementation implements NotesDatasource {
         ).toJson();
 
         await _databaseService.insert(
-          'notes',
+          'commands',
           commandArgs,
         );
       }
 
-      return NoteModel.fromJson({});
+      final noteResult = await _databaseService.query(
+        'notes',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+      if (noteResult.isEmpty) {
+        return throw const NotesError(
+          'Erro ao criar a nota',
+          code: -1,
+        );
+      }
+
+      return NoteModel.fromJson(noteResult.first);
     } on DatabaseError {
       rethrow;
     } catch (err) {
