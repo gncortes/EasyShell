@@ -46,3 +46,4 @@ ios/Flutter/App.framework
 .DS_Store
 build_bundle
 .dart_tool/
+.flutter-plugins-dependencies
