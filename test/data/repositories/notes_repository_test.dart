@@ -25,7 +25,7 @@ void main() {
       const input = CreateNoteInput(
         name: 'Valid Note Name',
         description: 'Valid description',
-        commands: [CreateCommand(value: 'echo', args: 'Hello World')],
+        commands: [CreateCommandInput(value: 'echo', args: 'Hello World')],
       );
 
       // Mock the datasource behavior to return a NoteEntity

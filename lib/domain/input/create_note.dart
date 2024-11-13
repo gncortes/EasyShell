@@ -3,7 +3,7 @@ import 'create_command.dart';
 class CreateNoteInput {
   final String name;
   final String description;
-  final List<CreateCommand> commands;
+  final List<CreateCommandInput> commands;
 
   const CreateNoteInput({
     required this.name,

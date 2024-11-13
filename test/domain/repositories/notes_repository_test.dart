@@ -32,7 +32,7 @@ void main() {
       const input = CreateNoteInput(
         name: 'Valid Note Name',
         description: 'Valid description',
-        commands: [CreateCommand(value: 'echo', args: 'Hello World')],
+        commands: [CreateCommandInput(value: 'echo', args: 'Hello World')],
       );
 
       final result = await repository.create(input);
@@ -54,7 +54,7 @@ void main() {
       const input = CreateNoteInput(
         name: '',
         description: 'Description without a valid name',
-        commands: [CreateCommand(value: 'echo', args: 'Hello')],
+        commands: [CreateCommandInput(value: 'echo', args: 'Hello')],
       );
 
       final result = await repository.create(input);

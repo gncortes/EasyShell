@@ -6,7 +6,6 @@ import 'sql/sql.dart';
 class SQLiteDatabase implements DatabaseService {
   Database? _database;
 
-  // Método para garantir inicialização automática de _database
   Future<Database> get database async {
     if (_database == null) {
       String path = join(await getDatabasesPath(), 'app_database.db');
@@ -24,8 +23,12 @@ class SQLiteDatabase implements DatabaseService {
 
   @override
   Future<int> insert(String table, Map<String, dynamic> data) async {
-    final db = await database; // Garante que _database está inicializado
-    return await db.insert(table, data);
+    final db = await database;
+    return await db.insert(
+      table,
+      data,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   @override
@@ -70,7 +73,7 @@ class SQLiteDatabase implements DatabaseService {
   Future<void> close() async {
     if (_database != null) {
       await _database!.close();
-      _database = null; // Permite reabertura do banco se necessário
+      _database = null;
     }
   }
 
