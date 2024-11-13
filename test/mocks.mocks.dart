@@ -5,10 +5,13 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:easy_shell/domain/entities/note.dart' as _i6;
+import 'package:easy_shell/data/datasource/notes_datasource.dart' as _i8;
+import 'package:easy_shell/data/models/note.dart' as _i4;
+import 'package:easy_shell/domain/entities/note.dart' as _i5;
+import 'package:easy_shell/domain/input/create_note.dart' as _i9;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i4;
-import 'package:sqflite_common/sql.dart' as _i5;
+import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:sqflite_common/sql.dart' as _i7;
 import 'package:sqflite_common/sqlite_api.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -64,6 +67,26 @@ class _FakeBatch_3 extends _i1.SmartFake implements _i2.Batch {
         );
 }
 
+class _FakeNoteModel_4 extends _i1.SmartFake implements _i4.NoteModel {
+  _FakeNoteModel_4(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeNoteEntity_5 extends _i1.SmartFake implements _i5.NoteEntity {
+  _FakeNoteEntity_5(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [Database].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -75,7 +98,7 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
   @override
   String get path => (super.noSuchMethod(
         Invocation.getter(#path),
-        returnValue: _i4.dummyValue<String>(
+        returnValue: _i6.dummyValue<String>(
           this,
           Invocation.getter(#path),
         ),
@@ -117,8 +140,8 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
           [action],
           {#exclusive: exclusive},
         ),
-        returnValue: _i4.ifNotNull(
-              _i4.dummyValueOrNull<T>(
+        returnValue: _i6.ifNotNull(
+              _i6.dummyValueOrNull<T>(
                 this,
                 Invocation.method(
                   #transaction,
@@ -146,8 +169,8 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
           #readTransaction,
           [action],
         ),
-        returnValue: _i4.ifNotNull(
-              _i4.dummyValueOrNull<T>(
+        returnValue: _i6.ifNotNull(
+              _i6.dummyValueOrNull<T>(
                 this,
                 Invocation.method(
                   #readTransaction,
@@ -178,8 +201,8 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
             arguments,
           ],
         ),
-        returnValue: _i4.ifNotNull(
-              _i4.dummyValueOrNull<T>(
+        returnValue: _i6.ifNotNull(
+              _i6.dummyValueOrNull<T>(
                 this,
                 Invocation.method(
                   #devInvokeMethod,
@@ -218,8 +241,8 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
             arguments,
           ],
         ),
-        returnValue: _i4.ifNotNull(
-              _i4.dummyValueOrNull<T>(
+        returnValue: _i6.ifNotNull(
+              _i6.dummyValueOrNull<T>(
                 this,
                 Invocation.method(
                   #devInvokeSqlMethod,
@@ -283,7 +306,7 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
     String? table,
     Map<String, Object?>? values, {
     String? nullColumnHack,
-    _i5.ConflictAlgorithm? conflictAlgorithm,
+    _i7.ConflictAlgorithm? conflictAlgorithm,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -452,7 +475,7 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
     Map<String, Object?>? values, {
     String? where,
     List<Object?>? whereArgs,
-    _i5.ConflictAlgorithm? conflictAlgorithm,
+    _i7.ConflictAlgorithm? conflictAlgorithm,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -523,8 +546,57 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
 /// A class which mocks [NoteEntity].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNoteEntity extends _i1.Mock implements _i6.NoteEntity {
+class MockNoteEntity extends _i1.Mock implements _i5.NoteEntity {
   MockNoteEntity() {
     _i1.throwOnMissingStub(this);
   }
+}
+
+/// A class which mocks [NotesDatasource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNotesDatasource extends _i1.Mock implements _i8.NotesDatasource {
+  MockNotesDatasource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.NoteModel> create(_i9.CreateNoteInput? input) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #create,
+          [input],
+        ),
+        returnValue: _i3.Future<_i4.NoteModel>.value(_FakeNoteModel_4(
+          this,
+          Invocation.method(
+            #create,
+            [input],
+          ),
+        )),
+      ) as _i3.Future<_i4.NoteModel>);
+}
+
+/// A class which mocks [NoteModel].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNoteModel extends _i1.Mock implements _i4.NoteModel {
+  MockNoteModel() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.NoteEntity toEntity() => (super.noSuchMethod(
+        Invocation.method(
+          #toEntity,
+          [],
+        ),
+        returnValue: _FakeNoteEntity_5(
+          this,
+          Invocation.method(
+            #toEntity,
+            [],
+          ),
+        ),
+      ) as _i5.NoteEntity);
 }
