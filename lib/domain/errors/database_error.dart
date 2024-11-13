@@ -1,5 +1,15 @@
 import 'app_error.dart';
 
 class DatabaseError extends AppError {
-  DatabaseError(super.message);
+  final DatabaseErrorType errorType;
+
+  DatabaseError(this.errorType, String message) : super(message);
+}
+
+enum DatabaseErrorType {
+  connectionError,
+  insertError,
+  updateError,
+  deleteError,
+  queryError,
 }
