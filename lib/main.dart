@@ -156,6 +156,38 @@ class ShimmerDemoScreen extends StatelessWidget {
                 const Text('Bottom to Top'),
               ],
             ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Shimmer.card(
+                  radius: BorderRadius.circular(5),
+                  size: shimmerSize,
+                  shimmerMargin: const EdgeInsets.all(8.0),
+                  baseColor: Colors.grey.shade500,
+                  gradientColors: [
+                    Colors.white,
+                    Colors.grey.shade500,
+                    Colors.white,
+                  ],
+                  duration: const Duration(seconds: 3),
+                  direction: ShimmerDirection.bottomToTop,
+                ),
+                const Text('Left to Right'),
+                Shimmer.circle(
+                  radius: 25,
+                  shimmerMargin: const EdgeInsets.all(8.0),
+                  baseColor: Colors.grey.shade500,
+                  gradientColors: [
+                    Colors.white,
+                    Colors.grey.shade500,
+                    Colors.white,
+                  ],
+                  duration: const Duration(seconds: 3),
+                  direction: ShimmerDirection.bottomToTop,
+                ),
+                const Text('Bottom to Top'),
+              ],
+            ),
           ],
         ),
       ),
