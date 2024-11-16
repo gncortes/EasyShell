@@ -54,7 +54,7 @@ abstract class ShimmerWidget extends StatefulWidget {
     required ShimmerDirection direction,
     required double radius,
   }) {
-    return _ShimmerCicle(
+    return _ShimmerCircle(
       key: key,
       shimmerMargin: shimmerMargin,
       baseColor: baseColor,
@@ -112,254 +112,6 @@ abstract class ShimmerWidget extends StatefulWidget {
   }
 }
 
-class _ShimmerCardWithChild extends ShimmerWidget {
-  final Size size;
-  final BorderRadiusGeometry radius;
-  final Widget child;
-  const _ShimmerCardWithChild({
-    super.key,
-    required this.size,
-    required this.radius,
-    required super.shimmerMargin,
-    required super.baseColor,
-    required super.gradientColors,
-    required super.duration,
-    required super.direction,
-    required this.child,
-  });
-
-  @override
-  State<_ShimmerCardWithChild> createState() => _ShimmerCardWithChildState();
-}
-
-class _ShimmerCardWithChildState extends State<_ShimmerCardWithChild>
-    with _AnimationControllerMixin, TickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: (widget).size.height,
-      width: (widget).size.width,
-      margin: widget.shimmerMargin,
-      decoration: BoxDecoration(
-        borderRadius: (widget).radius,
-        color: widget.baseColor,
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return ShaderMask(
-                shaderCallback: (value) => _ShimmerGradient(
-                  colors: widget.gradientColors,
-                  direction: widget.direction,
-                  slidePercent: animationController.value,
-                ).createShader(value),
-                blendMode: BlendMode.srcATop,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: widget.baseColor.withOpacity(0.1),
-                    borderRadius: (widget).radius,
-                  ),
-                ),
-              );
-            },
-          ),
-          widget.child,
-        ],
-      ),
-    );
-  }
-
-  @override
-  Duration get animationDuration => widget.duration;
-
-  @override
-  TickerProvider get ticker => this;
-}
-
-class _ShimmerCard extends ShimmerWidget {
-  final Size size;
-  final BorderRadiusGeometry radius;
-  const _ShimmerCard({
-    super.key,
-    required this.size,
-    required this.radius,
-    required super.shimmerMargin,
-    required super.baseColor,
-    required super.gradientColors,
-    required super.duration,
-    required super.direction,
-  });
-
-  @override
-  State<_ShimmerCard> createState() => _ShimmerCardState();
-}
-
-class _ShimmerCardState extends State<_ShimmerCard>
-    with _AnimationControllerMixin, TickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: (widget).size.height,
-      width: (widget).size.width,
-      margin: widget.shimmerMargin,
-      decoration: BoxDecoration(
-        borderRadius: (widget).radius,
-        color: widget.baseColor,
-      ),
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return ShaderMask(
-            shaderCallback: (value) => _ShimmerGradient(
-              colors: widget.gradientColors,
-              direction: widget.direction,
-              slidePercent: animationController.value,
-            ).createShader(value),
-            blendMode: BlendMode.srcATop,
-            child: Container(
-              decoration: BoxDecoration(
-                color: widget.baseColor.withOpacity(0.1),
-                borderRadius: (widget).radius,
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  @override
-  Duration get animationDuration => widget.duration;
-
-  @override
-  TickerProvider get ticker => this;
-}
-
-class _ShimmerCicle extends ShimmerWidget {
-  final double radius;
-  const _ShimmerCicle({
-    super.key,
-    required this.radius,
-    required super.shimmerMargin,
-    required super.baseColor,
-    required super.gradientColors,
-    required super.duration,
-    required super.direction,
-  });
-
-  @override
-  State<_ShimmerCicle> createState() => _ShimmerCicleState();
-}
-
-class _ShimmerCicleState extends State<_ShimmerCicle>
-    with _AnimationControllerMixin, TickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: (widget).radius * 2,
-      width: (widget).radius * 2,
-      margin: widget.shimmerMargin,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: widget.baseColor,
-      ),
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return ShaderMask(
-            shaderCallback: (value) => _ShimmerGradient(
-              colors: widget.gradientColors,
-              direction: widget.direction,
-              slidePercent: animationController.value,
-            ).createShader(value),
-            blendMode: BlendMode.srcATop,
-            child: Container(
-              decoration: BoxDecoration(
-                color: widget.baseColor.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  @override
-  Duration get animationDuration => widget.duration;
-
-  @override
-  TickerProvider get ticker => this;
-}
-
-class _ShimmerCircleWithChild extends _ShimmerCicle {
-  final Widget child;
-  const _ShimmerCircleWithChild({
-    super.key,
-    required this.child,
-    required super.radius,
-    required super.shimmerMargin,
-    required super.baseColor,
-    required super.gradientColors,
-    required super.duration,
-    required super.direction,
-  });
-
-  @override
-  State<_ShimmerCircleWithChild> createState() =>
-      __ShimmerCircleWithChildState();
-}
-
-class __ShimmerCircleWithChildState extends State<_ShimmerCircleWithChild>
-    with _AnimationControllerMixin, TickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: (widget).radius * 2,
-      width: (widget).radius * 2,
-      margin: widget.shimmerMargin,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: widget.baseColor,
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return ShaderMask(
-                shaderCallback: (value) => _ShimmerGradient(
-                  colors: widget.gradientColors,
-                  direction: widget.direction,
-                  slidePercent: animationController.value,
-                ).createShader(value),
-                blendMode: BlendMode.srcATop,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: widget.baseColor.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              );
-            },
-          ),
-          widget.child,
-        ],
-      ),
-    );
-  }
-
-  @override
-  Duration get animationDuration => widget.duration;
-
-  @override
-  TickerProvider get ticker => this;
-}
-
 class _SlidingGradientTransform extends GradientTransform {
   final double slidePercent;
 
@@ -369,19 +121,17 @@ class _SlidingGradientTransform extends GradientTransform {
   Matrix4 transform(Rect bounds, {TextDirection? textDirection}) {
     return Matrix4.translationValues(
       bounds.width * slidePercent * 2 - bounds.width,
-      bounds.height * slidePercent * 2 - bounds.height,
+      0.0,
       0.0,
     );
   }
 }
 
-mixin _AnimationControllerMixin on State<StatefulWidget> {
+mixin _AnimationControllerMixin on State<ShimmerWidget> {
   late AnimationController _controller;
 
-  /// Retorna o `AnimationController` que pode ser usado para animações.
   AnimationController get animationController => _controller;
 
-  /// A duração da animação. Subclasses devem sobrescrever este método.
   Duration get animationDuration;
 
   TickerProvider get ticker;
@@ -396,14 +146,13 @@ mixin _AnimationControllerMixin on State<StatefulWidget> {
   }
 
   @override
-  void didUpdateWidget(covariant StatefulWidget oldWidget) {
+  void didUpdateWidget(covariant ShimmerWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-
-    // Verifica se a duração mudou e recria o controlador, se necessário.
     if (_controller.duration != animationDuration) {
+      _controller.stop();
       _controller.dispose();
       _controller = AnimationController(
-        vsync: this,
+        vsync: ticker,
         duration: animationDuration,
       )..repeat();
     }
@@ -458,4 +207,296 @@ class _ShimmerGradient {
       transform: _SlidingGradientTransform(slidePercent: slidePercent),
     ).createShader(bounds);
   }
+}
+
+class _ShimmerCard extends ShimmerWidget {
+  final Size size;
+  final BorderRadiusGeometry radius;
+
+  const _ShimmerCard({
+    super.key,
+    required this.size,
+    required this.radius,
+    required super.shimmerMargin,
+    required super.baseColor,
+    required super.gradientColors,
+    required super.duration,
+    required super.direction,
+  });
+
+  @override
+  State<ShimmerWidget> createState() => _ShimmerCardState(
+        size: size,
+        radius: radius,
+      );
+}
+
+class _ShimmerCardState extends State<ShimmerWidget>
+    with _AnimationControllerMixin, TickerProviderStateMixin {
+  final Size size;
+  final BorderRadiusGeometry radius;
+
+  _ShimmerCardState({
+    required this.size,
+    required this.radius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: size.height,
+      width: size.width,
+      margin: widget.shimmerMargin,
+      decoration: BoxDecoration(
+        borderRadius: radius,
+        color: widget.baseColor,
+      ),
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return ShaderMask(
+            shaderCallback: (value) => _ShimmerGradient(
+              colors: widget.gradientColors,
+              direction: widget.direction,
+              slidePercent: animationController.value,
+            ).createShader(value),
+            blendMode: BlendMode.srcATop,
+            child: Container(
+              decoration: BoxDecoration(
+                color: widget.baseColor.withOpacity(0.1),
+                borderRadius: radius,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  Duration get animationDuration => widget.duration;
+
+  @override
+  TickerProvider get ticker => this;
+}
+
+class _ShimmerCardWithChild extends ShimmerWidget {
+  final Widget child;
+  final Size size;
+  final BorderRadiusGeometry radius;
+
+  const _ShimmerCardWithChild({
+    super.key,
+    required this.child,
+    required this.size,
+    required this.radius,
+    required super.shimmerMargin,
+    required super.baseColor,
+    required super.gradientColors,
+    required super.duration,
+    required super.direction,
+  });
+
+  @override
+  State<ShimmerWidget> createState() => _ShimmerCardWithChildState(
+        child: child,
+        size: size,
+        radius: radius,
+      );
+}
+
+class _ShimmerCardWithChildState extends State<ShimmerWidget>
+    with _AnimationControllerMixin, TickerProviderStateMixin {
+  final Widget child;
+  final Size size;
+  final BorderRadiusGeometry radius;
+
+  _ShimmerCardWithChildState({
+    required this.child,
+    required this.size,
+    required this.radius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: size.height,
+      width: size.width,
+      margin: widget.shimmerMargin,
+      decoration: BoxDecoration(
+        borderRadius: radius,
+        color: widget.baseColor,
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return ShaderMask(
+                shaderCallback: (value) => _ShimmerGradient(
+                  colors: widget.gradientColors,
+                  direction: widget.direction,
+                  slidePercent: animationController.value,
+                ).createShader(value),
+                blendMode: BlendMode.srcATop,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: widget.baseColor.withOpacity(0.1),
+                    borderRadius: radius,
+                  ),
+                ),
+              );
+            },
+          ),
+          child,
+        ],
+      ),
+    );
+  }
+
+  @override
+  Duration get animationDuration => widget.duration;
+
+  @override
+  TickerProvider get ticker => this;
+}
+
+class _ShimmerCircle extends ShimmerWidget {
+  final double radius;
+
+  const _ShimmerCircle({
+    super.key,
+    required this.radius,
+    required super.shimmerMargin,
+    required super.baseColor,
+    required super.gradientColors,
+    required super.duration,
+    required super.direction,
+  });
+
+  @override
+  State<ShimmerWidget> createState() => _ShimmerCircleState(radius: radius);
+}
+
+class _ShimmerCircleState extends State<ShimmerWidget>
+    with _AnimationControllerMixin, TickerProviderStateMixin {
+  final double radius;
+
+  _ShimmerCircleState({required this.radius});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: radius * 2,
+      width: radius * 2,
+      margin: widget.shimmerMargin,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: widget.baseColor,
+      ),
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return ShaderMask(
+            shaderCallback: (value) => _ShimmerGradient(
+              colors: widget.gradientColors,
+              direction: widget.direction,
+              slidePercent: animationController.value,
+            ).createShader(value),
+            blendMode: BlendMode.srcATop,
+            child: Container(
+              decoration: BoxDecoration(
+                color: widget.baseColor.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  Duration get animationDuration => widget.duration;
+
+  @override
+  TickerProvider get ticker => this;
+}
+
+class _ShimmerCircleWithChild extends ShimmerWidget {
+  final Widget child;
+  final double radius;
+
+  const _ShimmerCircleWithChild({
+    super.key,
+    required this.child,
+    required this.radius,
+    required super.shimmerMargin,
+    required super.baseColor,
+    required super.gradientColors,
+    required super.duration,
+    required super.direction,
+  });
+
+  @override
+  State<ShimmerWidget> createState() => _ShimmerCircleWithChildState(
+        child: child,
+        radius: radius,
+      );
+}
+
+class _ShimmerCircleWithChildState extends State<ShimmerWidget>
+    with _AnimationControllerMixin, TickerProviderStateMixin {
+  final Widget child;
+  final double radius;
+
+  _ShimmerCircleWithChildState({
+    required this.child,
+    required this.radius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: radius * 2,
+      width: radius * 2,
+      margin: widget.shimmerMargin,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: widget.baseColor,
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return ShaderMask(
+                shaderCallback: (value) => _ShimmerGradient(
+                  colors: widget.gradientColors,
+                  direction: widget.direction,
+                  slidePercent: animationController.value,
+                ).createShader(value),
+                blendMode: BlendMode.srcATop,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: widget.baseColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              );
+            },
+          ),
+          child,
+        ],
+      ),
+    );
+  }
+
+  @override
+  Duration get animationDuration => widget.duration;
+
+  @override
+  TickerProvider get ticker => this;
 }
