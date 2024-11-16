@@ -36,52 +36,13 @@ class ShimmerDemoScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Row(
+        child: Column(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Row(
               children: [
-                Shimmer.card(
-                  radius: BorderRadius.circular(5),
-                  size: shimmerSize,
-                  shimmerMargin: const EdgeInsets.all(8.0),
-                  baseColor: Colors.grey.shade500,
-                  gradientColors: [
-                    Colors.white,
-                    Colors.grey.shade500,
-                    Colors.white,
-                  ],
-                  duration: const Duration(seconds: 3),
-                  direction: ShimmerDirection.bottomToTop,
-                ),
-                const Text('Left to Right'),
-                Shimmer.circle(
-                  radius: 25,
-                  shimmerMargin: const EdgeInsets.all(8.0),
-                  baseColor: Colors.grey.shade500,
-                  gradientColors: [
-                    Colors.white,
-                    Colors.grey.shade500,
-                    Colors.white,
-                  ],
-                  duration: const Duration(seconds: 3),
-                  direction: ShimmerDirection.bottomToTop,
-                ),
-                const Text('Bottom to Top'),
-                Shimmer.row(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Shimmer.circle(
-                      radius: 25,
-                      shimmerMargin: const EdgeInsets.only(right: 8.0),
-                      baseColor: Colors.grey.shade500,
-                      gradientColors: [
-                        Colors.white,
-                        Colors.grey.shade500,
-                        Colors.white,
-                      ],
-                      duration: const Duration(seconds: 1),
-                      direction: ShimmerDirection.leftToRight,
-                    ),
                     Shimmer.card(
                       radius: BorderRadius.circular(5),
                       size: shimmerSize,
@@ -95,9 +56,89 @@ class ShimmerDemoScreen extends StatelessWidget {
                       duration: const Duration(seconds: 3),
                       direction: ShimmerDirection.bottomToTop,
                     ),
+                    const Text('Left to Right'),
+                    Shimmer.circle(
+                      radius: 25,
+                      shimmerMargin: const EdgeInsets.all(8.0),
+                      baseColor: Colors.grey.shade500,
+                      gradientColors: [
+                        Colors.white,
+                        Colors.grey.shade500,
+                        Colors.white,
+                      ],
+                      duration: const Duration(seconds: 3),
+                      direction: ShimmerDirection.bottomToTop,
+                    ),
+                    const Text('Bottom to Top'),
+                    Row(
+                      children: [
+                        Shimmer.circle(
+                          radius: 25,
+                          shimmerMargin: const EdgeInsets.only(right: 8.0),
+                          baseColor: Colors.grey.shade500,
+                          gradientColors: [
+                            Colors.white,
+                            Colors.grey.shade500,
+                            Colors.white,
+                          ],
+                          duration: const Duration(seconds: 1),
+                          direction: ShimmerDirection.leftToRight,
+                        ),
+                        Shimmer.card(
+                          radius: BorderRadius.circular(5),
+                          size: shimmerSize,
+                          shimmerMargin: const EdgeInsets.all(8.0),
+                          baseColor: Colors.grey.shade500,
+                          gradientColors: [
+                            Colors.white,
+                            Colors.grey.shade500,
+                            Colors.white,
+                          ],
+                          duration: const Duration(seconds: 3),
+                          direction: ShimmerDirection.bottomToTop,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ],
+            ),
+            Shimmer.cardWithChild(
+              shimmerMargin: const EdgeInsets.all(16.0),
+              baseColor: Colors.grey.shade300,
+              gradientColors: [
+                Colors.grey.shade300,
+                Colors.grey.shade100,
+                Colors.grey.shade300
+              ],
+              duration: const Duration(seconds: 2),
+              direction: ShimmerDirection.leftToRight,
+              size: Size(200, 100),
+              radius: BorderRadius.circular(10),
+              child: Container(
+                margin: const EdgeInsets.all(8),
+                height: 100,
+                width: 200,
+                color: Colors.black,
+              ),
+            ),
+            Shimmer.circleWithChild(
+              shimmerMargin: const EdgeInsets.all(16.0),
+              baseColor: Colors.grey.shade300,
+              gradientColors: [
+                Colors.grey.shade300,
+                Colors.grey.shade100,
+                Colors.grey.shade300
+              ],
+              duration: const Duration(seconds: 2),
+              direction: ShimmerDirection.leftToRight,
+              radius: 30,
+              child: Container(
+                margin: const EdgeInsets.all(8),
+                height: 30,
+                width: 20,
+                color: Colors.black,
+              ),
             ),
           ],
         ),

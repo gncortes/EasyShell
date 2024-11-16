@@ -7,11 +7,8 @@ enum ShimmerDirection {
   bottomToTop,
 }
 
-class Shimmer extends StatefulWidget {
+abstract class Shimmer extends StatefulWidget {
   const Shimmer._({super.key});
-
-  @override
-  State<Shimmer> createState() => throw UnimplementedError();
 
   /// Factory to create a Shimmer Card.
   factory Shimmer.card({
@@ -57,48 +54,49 @@ class Shimmer extends StatefulWidget {
     );
   }
 
-  factory Shimmer.row({
+  factory Shimmer.cardWithChild({
     Key? key,
-    required List<Shimmer> children,
-    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
-    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-    MainAxisSize mainAxisSize = MainAxisSize.max,
+    required EdgeInsetsGeometry shimmerMargin,
+    required Color baseColor,
+    required List<Color> gradientColors,
+    required Duration duration,
+    required ShimmerDirection direction,
+    required Widget child,
+    required Size size,
+    required BorderRadiusGeometry radius,
   }) {
-    return ShimmerRow(
+    return ShimmerCardWithChild(
       key: key,
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment,
-      mainAxisSize: mainAxisSize,
-      children: children,
+      shimmerMargin: shimmerMargin,
+      baseColor: baseColor,
+      gradientColors: gradientColors,
+      duration: duration,
+      direction: direction,
+      size: size,
+      radius: radius,
+      child: child,
     );
   }
-}
 
-class ShimmerRow extends Shimmer {
-  final List<Shimmer> children;
-  final MainAxisAlignment mainAxisAlignment;
-  final CrossAxisAlignment crossAxisAlignment;
-  final MainAxisSize mainAxisSize;
-  const ShimmerRow({
-    super.key,
-    required this.children,
-    required this.mainAxisAlignment,
-    required this.crossAxisAlignment,
-    required this.mainAxisSize,
-  }) : super._();
-
-  @override
-  State<ShimmerRow> createState() => _ShimmerRowState();
-}
-
-class _ShimmerRowState extends State<ShimmerRow> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: widget.mainAxisSize,
-      mainAxisAlignment: widget.mainAxisAlignment,
-      crossAxisAlignment: widget.crossAxisAlignment,
-      children: widget.children,
+  factory Shimmer.circleWithChild({
+    Key? key,
+    required EdgeInsetsGeometry shimmerMargin,
+    required Color baseColor,
+    required List<Color> gradientColors,
+    required Duration duration,
+    required ShimmerDirection direction,
+    required Widget child,
+    required double radius,
+  }) {
+    return ShimmerCircleWithChild(
+      key: key,
+      shimmerMargin: shimmerMargin,
+      baseColor: baseColor,
+      gradientColors: gradientColors,
+      duration: duration,
+      direction: direction,
+      radius: radius,
+      child: child,
     );
   }
 }
@@ -137,6 +135,18 @@ class _ShimmerCardState extends State<ShimmerCard>
       vsync: this,
       duration: widget.duration,
     )..repeat();
+  }
+
+  @override
+  void didUpdateWidget(covariant ShimmerCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.duration != widget.duration) {
+      _controller = AnimationController(
+        vsync: this,
+        duration: widget.duration,
+      )..repeat();
+    }
   }
 
   @override
@@ -241,6 +251,18 @@ class _ShimmerCircleState extends State<ShimmerCircle>
   }
 
   @override
+  void didUpdateWidget(covariant ShimmerCircle oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.duration != widget.duration) {
+      _controller = AnimationController(
+        vsync: this,
+        duration: widget.duration,
+      )..repeat();
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -318,6 +340,234 @@ class _SlidingGradientTransform extends GradientTransform {
       bounds.width * slidePercent * 2 - bounds.width,
       bounds.height * slidePercent * 2 - bounds.height,
       0.0,
+    );
+  }
+}
+
+class ShimmerCardWithChild extends ShimmerCard {
+  final Widget child;
+
+  const ShimmerCardWithChild({
+    super.key,
+    required this.child,
+    required super.size,
+    required super.shimmerMargin,
+    required super.baseColor,
+    required super.gradientColors,
+    required super.duration,
+    required super.direction,
+    required super.radius,
+  }) : super();
+
+  @override
+  State<ShimmerCardWithChild> createState() => _ShimmerChildState();
+}
+
+class _ShimmerChildState extends State<ShimmerCardWithChild>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    )..repeat();
+  }
+
+  @override
+  void didUpdateWidget(covariant ShimmerCardWithChild oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.duration != widget.duration) {
+      _controller = AnimationController(
+        vsync: this,
+        duration: widget.duration,
+      )..repeat();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: widget.size.width,
+      height: widget.size.height,
+      margin: widget.shimmerMargin,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return ShaderMask(
+                shaderCallback: (bounds) {
+                  Alignment begin;
+                  Alignment end;
+
+                  switch (widget.direction) {
+                    case ShimmerDirection.leftToRight:
+                      begin = const Alignment(-1.0, 0.0);
+                      end = const Alignment(1.0, 0.0);
+                      break;
+                    case ShimmerDirection.rightToLeft:
+                      begin = const Alignment(1.0, 0.0);
+                      end = const Alignment(-1.0, 0.0);
+                      break;
+                    case ShimmerDirection.topToBottom:
+                      begin = const Alignment(0.0, -1.0);
+                      end = const Alignment(0.0, 1.0);
+                      break;
+                    case ShimmerDirection.bottomToTop:
+                      begin = const Alignment(0.0, 1.0);
+                      end = const Alignment(0.0, -1.0);
+                      break;
+                  }
+
+                  return LinearGradient(
+                    begin: begin,
+                    end: end,
+                    colors: widget.gradientColors,
+                    stops: const [0.1, 0.5, 0.9],
+                    transform: _SlidingGradientTransform(
+                      slidePercent: _controller.value,
+                    ),
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.srcATop,
+                child: Container(
+                  color: widget.baseColor,
+                  width: widget.size.width,
+                  height: widget.size.height,
+                ),
+              );
+            },
+          ),
+          widget.child,
+        ],
+      ),
+    );
+  }
+}
+
+class ShimmerCircleWithChild extends ShimmerCircle {
+  final Widget child;
+
+  const ShimmerCircleWithChild({
+    super.key,
+    required this.child,
+    required super.shimmerMargin,
+    required super.baseColor,
+    required super.gradientColors,
+    required super.duration,
+    required super.direction,
+    required super.radius,
+  }) : super();
+
+  @override
+  State<ShimmerCircleWithChild> createState() => _ShimmerCircleWithChildState();
+}
+
+class _ShimmerCircleWithChildState extends State<ShimmerCircleWithChild>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    )..repeat();
+  }
+
+  @override
+  void didUpdateWidget(covariant ShimmerCircleWithChild oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.duration != widget.duration) {
+      _controller = AnimationController(
+        vsync: this,
+        duration: widget.duration,
+      )..repeat();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: widget.radius * 2,
+      width: widget.radius * 2,
+      margin: widget.shimmerMargin,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: widget.baseColor,
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return ShaderMask(
+                shaderCallback: (bounds) {
+                  Alignment begin;
+                  Alignment end;
+
+                  switch (widget.direction) {
+                    case ShimmerDirection.leftToRight:
+                      begin = const Alignment(-1.0, 0.0);
+                      end = const Alignment(1.0, 0.0);
+                      break;
+                    case ShimmerDirection.rightToLeft:
+                      begin = const Alignment(1.0, 0.0);
+                      end = const Alignment(-1.0, 0.0);
+                      break;
+                    case ShimmerDirection.topToBottom:
+                      begin = const Alignment(0.0, -1.0);
+                      end = const Alignment(0.0, 1.0);
+                      break;
+                    case ShimmerDirection.bottomToTop:
+                      begin = const Alignment(0.0, 1.0);
+                      end = const Alignment(0.0, -1.0);
+                      break;
+                  }
+
+                  return LinearGradient(
+                    begin: begin,
+                    end: end,
+                    colors: widget.gradientColors,
+                    stops: const [0.1, 0.5, 0.9],
+                    transform: _SlidingGradientTransform(
+                      slidePercent: _controller.value,
+                    ),
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.srcATop,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: widget.baseColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              );
+            },
+          ),
+          widget.child,
+        ],
+      ),
     );
   }
 }
