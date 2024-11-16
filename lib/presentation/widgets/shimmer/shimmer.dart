@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:flutter/material.dart';
 
 enum ShimmerDirection {
@@ -132,8 +134,6 @@ mixin _AnimationControllerMixin on State<ShimmerWidget> {
 
   AnimationController get animationController => _controller;
 
-  Duration get animationDuration;
-
   TickerProvider get ticker;
 
   @override
@@ -141,19 +141,18 @@ mixin _AnimationControllerMixin on State<ShimmerWidget> {
     super.initState();
     _controller = AnimationController(
       vsync: ticker,
-      duration: animationDuration,
+      duration: widget.duration,
     )..repeat();
   }
 
   @override
   void didUpdateWidget(covariant ShimmerWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (_controller.duration != animationDuration) {
-      _controller.stop();
+    if (_controller.duration != widget.duration) {
       _controller.dispose();
       _controller = AnimationController(
         vsync: ticker,
-        duration: animationDuration,
+        duration: widget.duration,
       )..repeat();
     }
   }
@@ -274,9 +273,6 @@ class _ShimmerCardState extends State<ShimmerWidget>
   }
 
   @override
-  Duration get animationDuration => widget.duration;
-
-  @override
   TickerProvider get ticker => this;
 }
 
@@ -356,9 +352,6 @@ class _ShimmerCardWithChildState extends State<ShimmerWidget>
   }
 
   @override
-  Duration get animationDuration => widget.duration;
-
-  @override
   TickerProvider get ticker => this;
 }
 
@@ -416,9 +409,6 @@ class _ShimmerCircleState extends State<ShimmerWidget>
       ),
     );
   }
-
-  @override
-  Duration get animationDuration => widget.duration;
 
   @override
   TickerProvider get ticker => this;
@@ -493,9 +483,6 @@ class _ShimmerCircleWithChildState extends State<ShimmerWidget>
       ),
     );
   }
-
-  @override
-  Duration get animationDuration => widget.duration;
 
   @override
   TickerProvider get ticker => this;
