@@ -406,3 +406,87 @@ class _SlidingGradientTransform extends GradientTransform {
     );
   }
 }
+
+mixin AnimationControllerMixin
+    on State<StatefulWidget>, SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  /// Retorna o `AnimationController` que pode ser usado para animações.
+  AnimationController get animationController => _controller;
+
+  /// A duração da animação. Subclasses devem sobrescrever este método.
+  Duration get animationDuration;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: animationDuration,
+    )..repeat();
+  }
+
+  @override
+  void didUpdateWidget(covariant StatefulWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Verifica se a duração mudou e recria o controlador, se necessário.
+    if (_controller.duration != animationDuration) {
+      _controller.dispose();
+      _controller = AnimationController(
+        vsync: this,
+        duration: animationDuration,
+      )..repeat();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+class _ShimmerGradient {
+  final ShimmerDirection direction;
+  final List<Color> colors;
+  final double slidePercent;
+
+  _ShimmerGradient({
+    required this.direction,
+    required this.colors,
+    required this.slidePercent,
+  });
+
+  Shader createShader(Rect bounds) {
+    final Alignment begin;
+    final Alignment end;
+
+    switch (direction) {
+      case ShimmerDirection.leftToRight:
+        begin = const Alignment(-1.0, 0.0);
+        end = const Alignment(1.0, 0.0);
+        break;
+      case ShimmerDirection.rightToLeft:
+        begin = const Alignment(1.0, 0.0);
+        end = const Alignment(-1.0, 0.0);
+        break;
+      case ShimmerDirection.topToBottom:
+        begin = const Alignment(0.0, -1.0);
+        end = const Alignment(0.0, 1.0);
+        break;
+      case ShimmerDirection.bottomToTop:
+        begin = const Alignment(0.0, 1.0);
+        end = const Alignment(0.0, -1.0);
+        break;
+    }
+
+    return LinearGradient(
+      begin: begin,
+      end: end,
+      colors: colors,
+      stops: const [0.1, 0.5, 0.9],
+      transform: _SlidingGradientTransform(slidePercent: slidePercent),
+    ).createShader(bounds);
+  }
+}
