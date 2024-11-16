@@ -28,7 +28,7 @@ class ShimmerDemoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shimmerSize = const Size(200, 50);
+    const shimmerSize = Size(200, 50);
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +43,7 @@ class ShimmerDemoScreen extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Shimmer.card(
+                    ShimmerWidget.card(
                       radius: BorderRadius.circular(5),
                       size: shimmerSize,
                       shimmerMargin: const EdgeInsets.all(8.0),
@@ -57,7 +57,7 @@ class ShimmerDemoScreen extends StatelessWidget {
                       direction: ShimmerDirection.bottomToTop,
                     ),
                     const Text('Left to Right'),
-                    Shimmer.circle(
+                    ShimmerWidget.circle(
                       radius: 25,
                       shimmerMargin: const EdgeInsets.all(8.0),
                       baseColor: Colors.grey.shade500,
@@ -72,7 +72,7 @@ class ShimmerDemoScreen extends StatelessWidget {
                     const Text('Bottom to Top'),
                     Row(
                       children: [
-                        Shimmer.circle(
+                        ShimmerWidget.circle(
                           radius: 25,
                           shimmerMargin: const EdgeInsets.only(right: 8.0),
                           baseColor: Colors.grey.shade500,
@@ -84,7 +84,7 @@ class ShimmerDemoScreen extends StatelessWidget {
                           duration: const Duration(seconds: 1),
                           direction: ShimmerDirection.leftToRight,
                         ),
-                        Shimmer.card(
+                        ShimmerWidget.card(
                           radius: BorderRadius.circular(5),
                           size: shimmerSize,
                           shimmerMargin: const EdgeInsets.all(8.0),
@@ -103,7 +103,7 @@ class ShimmerDemoScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Shimmer.cardWithChild(
+            ShimmerWidget.cardWithChild(
               shimmerMargin: const EdgeInsets.all(16.0),
               baseColor: Colors.grey.shade300,
               gradientColors: [
@@ -113,7 +113,7 @@ class ShimmerDemoScreen extends StatelessWidget {
               ],
               duration: const Duration(seconds: 2),
               direction: ShimmerDirection.leftToRight,
-              size: Size(200, 100),
+              size: const Size(200, 100),
               radius: BorderRadius.circular(10),
               child: Container(
                 margin: const EdgeInsets.all(8),
@@ -122,7 +122,7 @@ class ShimmerDemoScreen extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            Shimmer.circleWithChild(
+            ShimmerWidget.circleWithChild(
               shimmerMargin: const EdgeInsets.all(16.0),
               baseColor: Colors.grey.shade300,
               gradientColors: [
