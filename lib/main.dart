@@ -369,7 +369,7 @@ class ColorPickerScreen extends StatefulWidget {
 
 class _ColorPickerScreenState extends State<ColorPickerScreen> {
   MaterialColor? selectedColor;
-  final List<Color> selectedVariants = [];
+  final List<Color> selectedColors = [];
 
   final Map<MaterialColor, String> materialColors = {
     Colors.red: "Red",
@@ -403,18 +403,12 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              if (selectedColor != null && selectedVariants.isNotEmpty) {
-                Navigator.pop(context, {
-                  'color': selectedColor,
-                  'variants': selectedVariants,
-                });
-              } else {
-                Navigator.pop(context);
-              }
+              Navigator.pop(context,
+                  {"color": selectedColor, "variants": selectedColors});
             },
             child: const Text(
               "Done",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
           ),
         ],
@@ -448,7 +442,6 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedColor = value;
-                  selectedVariants.clear(); // Clear previous variants
                 });
               },
             ),
@@ -461,27 +454,67 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
                   final shade = entry.key;
                   final name = entry.value;
                   final color = selectedColor![shade];
-                  final isSelected = selectedVariants.contains(color);
 
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundColor: color,
                     ),
                     title: Text(name),
-                    trailing: isSelected
-                        ? const Icon(Icons.check, color: Colors.green)
-                        : null,
-                    onTap: () {
-                      setState(() {
-                        if (isSelected) {
-                          selectedVariants.remove(color);
-                        } else {
-                          if (color != null) selectedVariants.add(color);
-                        }
-                      });
-                    },
+                    subtitle: Text(
+                        "Base color? ${color?.value == selectedColor?.value}"),
+                    trailing: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          if (color != null) selectedColors.add(color);
+                        });
+                      },
+                      child: const Text("Add"),
+                    ),
                   );
                 }).toList(),
+              ),
+            ),
+          // Selected Colors List
+          if (selectedColors.isNotEmpty)
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "Selected Colors:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: selectedColors.length,
+                      itemBuilder: (context, index) {
+                        final color = selectedColors[index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: color,
+                          ),
+                          title: Text("Color ${index + 1}"),
+                          subtitle: Text(
+                              "Base color? ${color.value == selectedColor?.value}"),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              setState(() {
+                                selectedColors.removeAt(index);
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
         ],
